@@ -1,16 +1,45 @@
-# React + Vite
+# 雅高點數計算器 (Accor Points Calculator)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+這是一個雅高點數計算器網頁應用程式，旨在幫助您計算飯店住宿時的最佳點數使用方式，同時確保您每天保留最低限度的現金支付（以符合累積點數或房晚的資格）。
 
-Currently, two official plugins are available:
+## 功能特色
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **即時匯率**：透過 ExchangeRate-API 獲取最新匯率（以歐元 EUR 為基準）。
+- **強化使用者介面**：
+    - 貨幣下拉選單顯示完整的國家/貨幣名稱（例如："USD - US Dollar"）。
+    - 輸入總金額後，即時顯示換算後的歐元 (EUR) 和台幣 (TWD) 價值。
+- **彈性點數使用**：
+    - 自動建議在保留最低現金支付額（預設每日 10 歐元）後的最大可使用點數。
+    - **點數下拉選單**：您可以手動選擇要使用的點數，以 2000 點（40 歐元）為單位。
+    - **智慧限制**：選單選項會自動設限，確保折抵金額不會超過總帳單。
+    - **警告提示**：如果您的選擇導致剩餘現金支付額低於每日最低限制，系統會顯示警告。
+- **智慧計算**：自動計算以下數值：
+    - 總金額的歐元等值。
+    - 最低應付現金要求（預設為每日 10 歐元）。
+    - 最大可折抵點數（以 2000 點 / 40 歐元為區塊）。
+    - 剩餘應付金額（分別顯示原幣別、歐元和台幣）。
+- **優質介面**：採用深色模式、毛玻璃特效 (Glassmorphism) 設計，並搭配動態背景動畫。
 
-## React Compiler
+## 如何執行專案
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1.  進入專案目錄：
+    ```bash
+    cd c:/code/Accor/accor-calculator
+    ```
+2.  安裝依賴套件（若尚未安裝）：
+    ```bash
+    npm install
+    ```
+3.  啟動開發伺服器：
+    ```bash
+    npm run dev
+    ```
+4.  開啟瀏覽器並訪問顯示的網址（通常為 `http://localhost:5173`）。
 
-## Expanding the ESLint configuration
+## 驗證項目
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **建置**：`npm run build` 測試通過。
+- **邏輯**：
+    - 驗證點數建議僅以 2000 點（40 歐元）為倍數。
+    - 驗證在計算可折抵金額前，已優先保留每日最低現金支付額。
+    - 驗證各幣別顯示的匯率換算準確性。
