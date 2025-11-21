@@ -3,6 +3,16 @@ import { fetchRates } from '../api/currency';
 import { Calculator, Coins, CreditCard, Hotel, RefreshCw } from 'lucide-react';
 
 const AccorCalculator = () => {
+    const EARNING_RATES = [
+        { level: 'Classic', rates: [25, 12.5, 10, 5] },
+        { level: 'Silver', rates: [31, 15.5, 12.5, 6.25] },
+        { level: 'Gold', rates: [37, 18.5, 15, 7.5] },
+        { level: 'Platinum', rates: [44, 22, 17.5, 8.75] },
+        { level: 'Diamond', rates: [50, 25, 20, 10] },
+    ];
+
+    const STATUS_RATES = [25, 12.5, 10, 5];
+
     const [rates, setRates] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currency, setCurrency] = useState('TWD');
@@ -71,6 +81,12 @@ const AccorCalculator = () => {
 
     const valueRedeemedEUR = (pointsUsed / 2000) * 40;
     const remainingCashEUR = totalEUR - valueRedeemedEUR;
+
+    // Points Earning Calculation
+    // Rule: Actual payment per night > 10 EUR
+    const isEligibleForPoints = stayDays > 0 && (remainingCashEUR / stayDays) > 10;
+    // Rule: Points per 10 EUR spent, unconditional rounding down
+    const pointsBasis = isEligibleForPoints ? Math.floor(remainingCashEUR / 10) : 0;
 
     // Warning Logic
     const isBelowMinCash = remainingCashEUR < (minCashEUR - 0.01); // Tolerance for float
@@ -208,6 +224,53 @@ const AccorCalculator = () => {
                         <strong>{formatCurrency(remainingCashTWD, 'TWD')}</strong>
                     </div>
                 </div>
+
+                {/* Earnings Table */}
+                {totalAmount > 0 && (
+                    <div className="earnings-section">
+                        <div className="result-section-title">Estimated Earnings</div>
+                        {!isEligibleForPoints ? (
+                            <div className="info-banner">
+                                Minimum spend of 10 EUR per night required to earn points.
+                            </div>
+                        ) : (
+                            <div className="earnings-table-container">
+                                <table className="earnings-table">
+                                    <thead>
+                                        <tr>
+                                            <th className="level-col">Level</th>
+                                            <th>Participating Brands *</th>
+                                            <th>Ibis, Styles, Mama</th>
+                                            <th>Mantra, Peppers... **</th>
+                                            <th>Adagio, Jo&Joe...</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {EARNING_RATES.map((tier) => (
+                                            <tr key={tier.level}>
+                                                <td className="level-col">{tier.level}</td>
+                                                {tier.rates.map((rate, idx) => (
+                                                    <td key={idx}>{formatPoints(Math.floor(pointsBasis * rate))}</td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                        <tr className="separator-row"><td colSpan="5"></td></tr>
+                                        <tr className="status-row">
+                                            <td className="level-col">Status Points</td>
+                                            {STATUS_RATES.map((rate, idx) => (
+                                                <td key={idx}>{formatPoints(Math.floor(pointsBasis * rate))}</td>
+                                            ))}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div className="table-footer">
+                                    <small>* Most Accor brands (Sofitel, Pullman, Novotel, Mercure, etc.)</small>
+                                    <small>** Mantra, Peppers, Breakfree, Art Series, Adagio Original</small>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
 
             <div className="footer">

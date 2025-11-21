@@ -126,6 +126,7 @@ body {
   margin: 0;
   background: linear-gradient(to right, #fff, #94a3b8);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -427,4 +428,111 @@ select.points-input option {
 
 select.points-input:focus {
   border-color: var(--accent-color);
+}
+
+/* Earnings Table Styles */
+.earnings-section {
+  margin-top: 24px;
+  animation: slideUp 0.6s ease-out 0.2s backwards;
+}
+
+.earnings-table-container {
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.earnings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  text-align: center;
+  min-width: 600px;
+}
+
+.earnings-table th,
+.earnings-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.earnings-table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  font-weight: 600;
+  vertical-align: middle;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.earnings-table td {
+  color: var(--text-primary);
+}
+
+.earnings-table tr:last-child td {
+  border-bottom: none;
+}
+
+.earnings-table .level-col {
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-color);
+  position: sticky;
+  left: 0;
+  background: var(--bg-color);
+  z-index: 2;
+  border-right: 1px solid var(--card-border);
+  min-width: 80px;
+}
+
+.earnings-table tr:hover td {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Ensure sticky column matches row background on hover */
+.earnings-table tr:hover .level-col {
+  background: #1e293b;
+}
+
+.status-row td {
+  font-weight: 700;
+  color: var(--success-color);
+  background: rgba(74, 222, 128, 0.05);
+}
+
+.status-row .level-col {
+  color: var(--success-color);
+}
+
+.separator-row td {
+  border: none;
+  height: 8px;
+  padding: 0;
+  background: transparent;
+}
+
+.table-footer {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.table-footer small {
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.info-banner {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: var(--accent-color);
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  text-align: center;
 }
