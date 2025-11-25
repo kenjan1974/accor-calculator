@@ -536,3 +536,17 @@ select.points-input:focus {
   font-size: 0.875rem;
   text-align: center;
 }
+
+/* Cost Analysis Section */
+.cost-analysis-section {
+  margin-top: 24px;
+  animation: slideUp 0.6s ease-out 0.3s backwards;
+}
+
+.sub-text {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  margin-top: 2px;
+}

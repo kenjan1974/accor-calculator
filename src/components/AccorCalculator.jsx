@@ -20,6 +20,7 @@ const AccorCalculator = () => {
     const [totalAmount, setTotalAmount] = useState('');
     const [minCashPerDay, setMinCashPerDay] = useState(10); // Default 10 EUR
     const [manualPoints, setManualPoints] = useState(null);
+    const [signatureCost, setSignatureCost] = useState('');
 
     useEffect(() => {
         const loadRates = async () => {
@@ -94,6 +95,15 @@ const AccorCalculator = () => {
     // Conversions for display
     const remainingCashSelected = remainingCashEUR * rates[currency];
     const remainingCashTWD = remainingCashEUR * rates['TWD'];
+
+    // Total Cost Calculation (Signature Absolute)
+    const signatureCostTWD = parseFloat(signatureCost) || 0;
+    // Cost per point = Annual Cost / 75000
+    // Cost of points used = (Annual Cost / 75000) * pointsUsed
+    const pointsCostTWD = (signatureCostTWD / 75000) * pointsUsed;
+
+    const totalConsumptionCostTWD = pointsCostTWD + remainingCashTWD;
+    const totalConsumptionCostEUR = totalConsumptionCostTWD / rates['TWD'];
 
     const formatCurrency = (val, cur) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: cur }).format(val);
@@ -173,6 +183,18 @@ const AccorCalculator = () => {
                     onChange={(e) => setMinCashPerDay(parseFloat(e.target.value) || 0)}
                 />
                 <small className="hint">You requested keeping at least 10 EUR/day.</small>
+            </div>
+
+            <div className="input-group">
+                <label>ALL Signature Absolute 年繳的台幣成本</label>
+                <input
+                    type="number"
+                    min="0"
+                    value={signatureCost}
+                    onChange={(e) => setSignatureCost(e.target.value)}
+                    placeholder="e.g. 30000"
+                />
+                <small className="hint">Signature Absolute 一年可以取得75000的獎勵積分(折合1500歐元)，所以可以換算折抵積分時的實際成本。</small>
             </div>
 
             <div className="divider"></div>
@@ -269,6 +291,25 @@ const AccorCalculator = () => {
                                 </div>
                             </div>
                         )}
+                    </div>
+                )}
+
+                {/* Total Cost Analysis */}
+                {signatureCost > 0 && (
+                    <div className="cost-analysis-section">
+                        <div className="result-section-title">Total Cost of this Consumption</div>
+                        <div className="result-grid">
+                            <div className="result-box">
+                                <span>Total Cost (EUR)</span>
+                                <strong>{formatCurrency(totalConsumptionCostEUR, 'EUR')}</strong>
+                                <small className="sub-text">Points Cost + Cash</small>
+                            </div>
+                            <div className="result-box">
+                                <span>Total Cost (TWD)</span>
+                                <strong>{formatCurrency(totalConsumptionCostTWD, 'TWD')}</strong>
+                                <small className="sub-text">Points Cost + Cash</small>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
